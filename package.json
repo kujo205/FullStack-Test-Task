@@ -1,16 +1,14 @@
 {
-  "name": "my-turborepo",
+  "name": "universe-middle-fullstack-task",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "build:web": "turbo run build --filter=web",
+    "dev:web": "turbo run dev --filter=web",
+    "format:web": "turbo run format --filter=web",
+    "lint:web": "turbo run lint --filter=web"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.8",
-    "prettier": "^3.6.2",
+    "@biomejs/biome": "^2.3.10",
     "turbo": "^2.6.3",
     "typescript": "5.9.2"
   },
