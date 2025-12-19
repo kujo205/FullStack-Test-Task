@@ -1,6 +1,8 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Header } from "@/features/main-layout/components/header";
+import { DialogProvider } from "@/shared/custom-ui/dialog-window";
 
 import appCss from "../styles.css?url";
 
@@ -36,22 +38,25 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
 
-      <body>
-        {children}
+      <body className="dark min-h-screen">
+        <DialogProvider>
+          <Header />
+          {children}
 
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+          <TanStackDevtools
+            config={{
+              position: "bottom-right",
+            }}
+            plugins={[
+              {
+                name: "Tanstack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
 
-        <Scripts />
+          <Scripts />
+        </DialogProvider>
       </body>
     </html>
   );

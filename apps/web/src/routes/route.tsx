@@ -8,6 +8,5 @@ function App() {
       hello this is me
       <Outlet />
     </div>
-    // <ComponentExample/>
   );
 }

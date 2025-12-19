@@ -1,8 +1,7 @@
-import * as React from "react";
 import { Separator as SeparatorPrimitive } from "radix-ui";
+import * as React from "react";
 
-import { cn } from "@/lib/utils";
-
+import { cn } from "@/shared/utils/cn.ts";
 function Separator({
   className,
   orientation = "horizontal",

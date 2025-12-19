@@ -6,12 +6,10 @@ export const Route = createFileRoute("/auth")({
 
 function LayoutComponent() {
   return (
-    <div>
-      <header>Header</header>
-      <main>
+    <main className="h-[calc(100vh-4rem)] max-md:px-8 flex items-center justify-center ">
+      <div className="w-full max-w-sm">
         <Outlet />
-      </main>
-      <footer>Footer</footer>
-    </div>
+      </div>
+    </main>
   );
 }
