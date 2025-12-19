@@ -31,6 +31,7 @@ export function Header() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
             <FolderKanban className="h-5 w-5" />
           </div>
+          {/* @ts-ignore-next-line */}
           <Link to="/">
             <span className="text-lg font-semibold tracking-tight">
               Github<span className="text-primary">PM</span>
