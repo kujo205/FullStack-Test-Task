@@ -7,6 +7,12 @@
 		"types": ["node"],
 		"outDir": "./dist",
 		"target": "ESNext",
-		"verbatimModuleSyntax": true
+
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@core/*": ["./src/core/*"],
+			"@infra/*": ["./src/infra/*"]
+		}
 	}
 }
