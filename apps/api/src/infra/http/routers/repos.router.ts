@@ -1,11 +1,45 @@
+import { RepoService } from "@core/services/repo.service";
+import { DB } from "@infra/db";
+import { RepoRepository } from "@infra/db/repositories/repo.repository";
+import { RepoController } from "@infra/http/controllers/repo.controller";
+import zodValidatorMiddleware from "@infra/http/middlewares/zodValidator.middleware";
+import { PaginationQuerySchema, parsePagination } from "@infra/http/schemas/pagination.schema";
+import { AppVars } from "@infra/http/types";
 import { Hono } from "hono";
+import { Kysely } from "kysely";
+import { CreateRepoBodySchema, RepoPathSchema } from "@/infra/http/schemas/repos.schema";
 
-const app = new Hono();
+export function createReposRouter(db: Kysely<DB>) {
+  const repoController = new RepoController(new RepoService(new RepoRepository(db)));
 
-app.get("/:id", (c) => {
-  const id = c.req.param("id");
+  const app = new Hono<AppVars>()
+    .post("/", zodValidatorMiddleware("json", CreateRepoBodySchema), async (c) => {
+      const body = c.req.valid("json");
 
-  return c.json(`list repos ${id}`);
-});
+      const user = c.get("user");
 
-export default app;
+      const repoData = RepoPathSchema.parse(body);
+
+      await repoController.createUserRepo(user.id, repoData);
+
+      return c.json({
+        success: true,
+      });
+    })
+    .get("/", zodValidatorMiddleware("query", PaginationQuerySchema), async (c) => {
+      const query = c.req.valid("query");
+
+      const user = c.get("user");
+
+      const pagination = parsePagination(query);
+
+      const resp = await repoController.getUserRepos(user.id, pagination);
+
+      return c.json({
+        success: true,
+        data: resp,
+      });
+    });
+
+  return app;
+}

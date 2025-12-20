@@ -31,7 +31,7 @@ export interface Account {
 
 export interface Repo {
   createdAt: Generated<Timestamp>;
-  createdAtUtc: Int8;
+  createdAtUtc: Int8 | null;
   forks: Generated<number>;
   id: string;
   issues: Generated<number>;

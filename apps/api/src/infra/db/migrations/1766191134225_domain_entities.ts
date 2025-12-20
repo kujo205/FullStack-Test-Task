@@ -12,7 +12,7 @@ export async function up(db: Kysely<never>): Promise<void> {
                              "forks" INTEGER NOT NULL DEFAULT 0,
                              "issues" INTEGER NOT NULL DEFAULT 0,
 
-                             "createdAtUtc" BIGINT NOT NULL,
+                             "createdAtUtc" BIGINT NULL,
 
                              "status" VARCHAR(20) NOT NULL DEFAULT 'pending',
                              "userId" TEXT NOT NULL,

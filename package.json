@@ -6,7 +6,6 @@
 		"dev:web": "turbo run dev --filter=web",
 		"format:web": "turbo run format --filter=web",
 		"lint:web": "turbo run lint --filter=web",
-
 		"dev:api": "turbo run dev --filter=api",
 		"build:api": "turbo run build --filter=api",
 		"format:api": "turbo run format --filter=api",
@@ -15,7 +14,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.10",
 		"turbo": "^2.6.3",
-		"typescript": "5.9.2"
+		"typescript": "5.9.2",
+		"vitest": "^4.0.15"
 	},
 	"packageManager": "pnpm@9.0.0",
 	"engines": {

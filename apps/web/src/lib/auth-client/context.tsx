@@ -32,6 +32,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const { data: session, isPending } = authClient.useSession();
+  // TODO: fix incorrect login state detection when page reloads
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const router = useRouter();

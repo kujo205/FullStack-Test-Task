@@ -4,7 +4,7 @@ const corsMiddleware = cors({
   // TODO: allow this only in development
   origin: "http://localhost:3000",
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowHeaders: ["Content-Type", "Authorization"],
+  allowHeaders: ["Content-Type", "Authorization", "Cookie"],
   credentials: true,
 });
 
