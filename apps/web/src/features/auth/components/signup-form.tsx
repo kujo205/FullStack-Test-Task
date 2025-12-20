@@ -7,14 +7,17 @@ import { Input } from "@/shared/ui/input";
 import { cn } from "@/shared/utils/cn";
 
 export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const { signUpEmail } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -26,20 +29,29 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
       return;
     }
 
-    setError("");
+    if (name.trim().length === 0) {
+      setError("Name is required");
+      return;
+    }
 
-    const formData = new FormData(e.currentTarget);
+    setIsLoading(true);
 
-    const email = formData.get("email") as string;
-    const pass = formData.get("password") as string;
+    try {
+      const result = await signUpEmail({
+        email,
+        password,
+        name: name.trim(),
+      });
 
-    console.log("singupemail", typeof signUpEmail);
-
-    signUpEmail({
-      email,
-      password: pass, // use controlled state (not FormData) to avoid null
-      name: "some name",
-    });
+      if (result?.error) {
+        setError(result.error.message || "Signup failed");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -56,9 +68,36 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             </FieldDescription>
           </div>
 
+          {error && (
+            <div className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950 p-3 rounded">
+              {error}
+            </div>
+          )}
+
+          <Field>
+            <FieldLabel htmlFor="name">Name</FieldLabel>
+            <Input
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </Field>
+
           <Field>
             <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
+            />
           </Field>
 
           <Field>
@@ -66,12 +105,12 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             <Input
               id="password"
               type="password"
-              name="password"
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
+              disabled={isLoading}
             />
           </Field>
 
@@ -85,19 +124,17 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               minLength={8}
+              disabled={isLoading}
             />
           </Field>
 
-          {error && <div className="text-sm text-red-600 dark:text-red-400">{error}</div>}
-
           <Field>
-            <Button type="submit" className="w-full">
-              Create Account
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
           </Field>
         </FieldGroup>
       </form>
-
       <FieldDescription className="px-6 text-center">
         By clicking continue, you agree to our Terms of Service and Privacy Policy.
       </FieldDescription>
