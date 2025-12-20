@@ -1,9 +1,9 @@
-import { redirect, useRouter } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { createAuthClient } from "better-auth/react";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 const authClient = createAuthClient({
-  baseURL: "http://localhost:4000",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 interface Session {
@@ -39,11 +39,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signInEmail: typeof authClient.signIn.email = async (data, options) => {
     const result = await authClient.signIn.email(data, options);
 
-    setIsLoggedIn(!!session?.user);
+    setIsLoggedIn(!!result.data);
 
-    router.navigate({
-      to: "/",
-    });
+    if (!result?.error) {
+      router.navigate({
+        to: "/",
+      });
+    }
 
     return result;
   };
@@ -51,11 +53,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signUpEmail: typeof authClient.signUp.email = async (data, options) => {
     const result = await authClient.signUp.email(data, options);
 
-    setIsLoggedIn(!!session?.user);
+    setIsLoggedIn(!!result.data);
 
-    router.navigate({
-      to: "/",
-    });
+    if (!result?.error) {
+      router.navigate({
+        to: "/",
+      });
+    }
 
     return result;
   };

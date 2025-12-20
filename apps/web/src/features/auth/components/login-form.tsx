@@ -27,7 +27,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       if (result.error) {
         setError(result.error.message || "Login failed. Please try again.");
       }
-      // Redirect is handled in the auth context
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
       console.error("Login error:", err);
