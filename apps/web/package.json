@@ -20,6 +20,7 @@
 		"@tanstack/react-router-ssr-query": "^1.131.7",
 		"@tanstack/react-start": "^1.132.0",
 		"@tanstack/router-plugin": "^1.132.0",
+		"better-auth": "^1.4.7",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.562.0",
@@ -34,6 +35,8 @@
 		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"devDependencies": {
+		"@repo/biome-config": "workspace:*",
+		"@repo/typescript-config": "workspace:*",
 		"@tanstack/devtools-vite": "^0.3.11",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/react": "^16.2.0",
@@ -45,8 +48,6 @@
 		"typescript": "^5.7.2",
 		"vite": "^7.1.7",
 		"vitest": "^3.0.5",
-		"web-vitals": "^5.1.0",
-		"@repo/biome-config": "workspace:*",
-		"@repo/typescript-config": "workspace:*"
+		"web-vitals": "^5.1.0"
 	}
 }

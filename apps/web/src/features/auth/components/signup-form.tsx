@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useAuth } from "@/lib/auth-client";
 import { Button } from "@/shared/ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/shared/ui/field";
 import { Input } from "@/shared/ui/input";
@@ -9,6 +10,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { signUpEmail } = useAuth();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,8 +27,19 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
     }
 
     setError("");
-    // Handle form submission here
-    console.log("Form submitted successfully");
+
+    const formData = new FormData(e.currentTarget);
+
+    const email = formData.get("email") as string;
+    const pass = formData.get("password") as string;
+
+    console.log("singupemail", typeof signUpEmail);
+
+    signUpEmail({
+      email,
+      password: pass, // use controlled state (not FormData) to avoid null
+      name: "some name",
+    });
   };
 
   return (
@@ -44,7 +58,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
 
           <Field>
             <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input id="email" type="email" placeholder="m@example.com" required />
+            <Input id="email" name="email" type="email" placeholder="m@example.com" required />
           </Field>
 
           <Field>
@@ -52,6 +66,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
             <Input
               id="password"
               type="password"
+              name="password"
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { FolderKanban, LogIn, Plus } from "lucide-react";
+import { useAuth } from "@/lib/auth-client";
 import { useDialog } from "@/shared/custom-ui/dialog-window";
 import { Button } from "@/shared/ui/button";
 import { CreateProjectDialog } from "./create-project-dialog";
@@ -7,7 +8,7 @@ import { CreateProjectDialog } from "./create-project-dialog";
 export function Header() {
   const { open } = useDialog();
 
-  const userLoggedIn = false; // Replace with actual authentication logic
+  const { isLoggedIn, signOut } = useAuth();
 
   const openCreateProject = () => {
     open({
@@ -23,26 +24,33 @@ export function Header() {
     console.log("Login clicked");
   };
 
+  const handleLogout = () => {
+    signOut();
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <FolderKanban className="h-5 w-5" />
-          </div>
-          {/* @ts-ignore-next-line */}
-          <Link to="/">
-            <span className="text-lg font-semibold tracking-tight">
+        <Link to="/">
+          <div className="flex items-center gap-2">
+            {/* @ts-ignore-next-line */}
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <FolderKanban className="h-5 w-5" />
+            </div>
+            <span className="text-lg max-md:hidden font-semibold tracking-tight">
               Github<span className="text-primary">PM</span>
             </span>
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         {/* Navigation */}
         <nav className="flex items-center gap-2">
-          {userLoggedIn ? (
+          {isLoggedIn ? (
             <>
+              <Button variant="ghost" onClick={handleLogout}>
+                Sign out
+              </Button>
               <Button variant="ghost" asChild>
                 <Link to="." className="cursor-pointer">
                   All Projects

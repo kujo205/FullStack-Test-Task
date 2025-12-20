@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Header } from "@/features/main-layout/components/header";
+import { AuthProvider } from "@/lib/auth-client";
 import { DialogProvider } from "@/shared/custom-ui/dialog-window";
 
 import appCss from "../styles.css?url";
@@ -39,24 +40,26 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
 
       <body className="dark min-h-screen">
-        <DialogProvider>
-          <Header />
-          {children}
+        <AuthProvider>
+          <DialogProvider>
+            <Header />
+            {children}
 
-          <TanStackDevtools
-            config={{
-              position: "bottom-right",
-            }}
-            plugins={[
-              {
-                name: "Tanstack Router",
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-            ]}
-          />
+            <TanStackDevtools
+              config={{
+                position: "bottom-right",
+              }}
+              plugins={[
+                {
+                  name: "Tanstack Router",
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
 
-          <Scripts />
-        </DialogProvider>
+            <Scripts />
+          </DialogProvider>
+        </AuthProvider>
       </body>
     </html>
   );

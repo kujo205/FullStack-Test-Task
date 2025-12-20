@@ -12,5 +12,8 @@
 			"bracketSpacing": true,
 			"arrowParentheses": "always"
 		}
+	},
+	"files": {
+    "includes": ["**", "!src/routeTree.gen.ts"]
 	}
 }
