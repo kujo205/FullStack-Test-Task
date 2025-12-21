@@ -32,43 +32,36 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const { data: session, isPending } = authClient.useSession();
-  // TODO: fix incorrect login state detection when page reloads
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const isLoggedIn = !!session;
 
   const router = useRouter();
 
   const signInEmail: typeof authClient.signIn.email = async (data, options) => {
     const result = await authClient.signIn.email(data, options);
 
-    setIsLoggedIn(!!result.data);
-
+    // Manual navigation if needed, though session state will update automatically
     if (!result?.error) {
-      router.navigate({
-        to: "/",
-      });
+      // @ts-ignore-next-line
+      router.navigate({ to: "/" });
     }
-
     return result;
   };
 
   const signUpEmail: typeof authClient.signUp.email = async (data, options) => {
     const result = await authClient.signUp.email(data, options);
-
-    setIsLoggedIn(!!result.data);
-
     if (!result?.error) {
-      router.navigate({
-        to: "/",
-      });
+      // @ts-ignore-next-line
+      router.navigate({ to: "/" });
     }
-
     return result;
   };
 
   const handleSignOut = async () => {
-    const result = await authClient.signOut();
-    setIsLoggedIn(false);
-    return result;
+    await authClient.signOut();
+    // No need to manually set isLoggedIn(false),
+    // authClient.useSession() will update on the next tick.
+    router.navigate({ to: "/login" });
   };
 
   return (
