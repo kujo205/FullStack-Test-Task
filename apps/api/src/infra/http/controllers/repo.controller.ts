@@ -17,9 +17,19 @@ export class RepoController {
         await this.repoService.upsertGithubRepo(repoId, ghData);
       })();
     });
+
+    return repoId;
   }
 
   async getUserRepos(userId: string, pagination: TPagination) {
     return this.repoService.fetchAllUserRepos(userId, pagination);
+  }
+
+  async deleteRepo(userId: string, repoId: string) {
+    // Implementation for deleting a repository goes here
+  }
+
+  async updateUserRepo(repoId: string) {
+    // implement repo updating logic
   }
 }

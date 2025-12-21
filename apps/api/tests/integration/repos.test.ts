@@ -71,4 +71,16 @@ describe("repos route", async () => {
       expect(body.data).toBeTypeOf("object");
     });
   });
+
+  describe("DELETE /repos/:repoId", ({ skip }) => {
+    skip("WIP");
+    // it("should delete user's repo", async () => {
+    //
+    // }
+  });
+
+  describe("GET /repos/:repoId/update, update the repo", ({ skip }) => {
+    skip("WIP");
+    // it("should update user's repo", async () => {
+  });
 });

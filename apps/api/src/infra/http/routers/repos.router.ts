@@ -20,10 +20,13 @@ export function createReposRouter(db: Kysely<DB>) {
 
       const repoData = RepoPathSchema.parse(body);
 
-      await repoController.createUserRepo(user.id, repoData);
+      const repoId = await repoController.createUserRepo(user.id, repoData);
 
       return c.json({
         success: true,
+        data: {
+          repoId,
+        },
       });
     })
     .get("/", zodValidatorMiddleware("query", PaginationQuerySchema), async (c) => {
@@ -38,6 +41,26 @@ export function createReposRouter(db: Kysely<DB>) {
       return c.json({
         success: true,
         data: resp,
+      });
+    })
+    .delete("/:repoId", async (c) => {
+      const { repoId } = c.req.param();
+
+      const user = c.get("user");
+
+      await repoController.deleteRepo(user.id, repoId);
+
+      return c.json({
+        success: true,
+      });
+    })
+    .get("/:repoId/update", async (c) => {
+      const { repoId } = c.req.param();
+
+      await repoController.updateUserRepo(repoId);
+
+      return c.json({
+        success: true,
       });
     });
 
