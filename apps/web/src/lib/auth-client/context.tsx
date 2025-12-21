@@ -40,7 +40,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signInEmail: typeof authClient.signIn.email = async (data, options) => {
     const result = await authClient.signIn.email(data, options);
 
-    // Manual navigation if needed, though session state will update automatically
     if (!result?.error) {
       // @ts-ignore-next-line
       router.navigate({ to: "/" });

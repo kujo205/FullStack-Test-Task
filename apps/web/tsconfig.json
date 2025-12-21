@@ -10,10 +10,16 @@
 
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@api/*": ["../api/src/*"]
 		},
 
 		"allowImportingTsExtensions": true,
 		"verbatimModuleSyntax": false
-	}
+	},
+	"references": [
+		{
+			"path": "../api/tsconfig.json"
+		}
+	]
 }

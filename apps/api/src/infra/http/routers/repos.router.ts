@@ -13,7 +13,7 @@ export function createReposRouter(db: Kysely<DB>) {
   const repoController = new RepoController(new RepoService(new RepoRepository(db)));
 
   const app = new Hono<AppVars>()
-    .post("/", zodValidatorMiddleware("json", CreateRepoBodySchema), async (c) => {
+    .post("/repos", zodValidatorMiddleware("json", CreateRepoBodySchema), async (c) => {
       const body = c.req.valid("json");
 
       const user = c.get("user");
@@ -27,7 +27,7 @@ export function createReposRouter(db: Kysely<DB>) {
         repoId,
       });
     })
-    .get("/", zodValidatorMiddleware("query", PaginationQuerySchema), async (c) => {
+    .get("/repos", zodValidatorMiddleware("query", PaginationQuerySchema), async (c) => {
       const query = c.req.valid("query");
 
       const user = c.get("user");
@@ -41,7 +41,7 @@ export function createReposRouter(db: Kysely<DB>) {
         data: resp,
       });
     })
-    .delete(":repoId", async (c) => {
+    .delete("/repos/:repoId", async (c) => {
       const { repoId } = c.req.param();
 
       const user = c.get("user");
@@ -52,7 +52,7 @@ export function createReposRouter(db: Kysely<DB>) {
         success: true,
       });
     })
-    .get(":repoId/update", async (c) => {
+    .get("/repos/:repoId/update", async (c) => {
       const { repoId } = c.req.param();
 
       await repoController.updateUserRepo(repoId);
