@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import corsMiddleware from "@infra/http/middlewares/cors.middleware";
 import sessionMiddleware from "@infra/http/middlewares/session.middleware";
 

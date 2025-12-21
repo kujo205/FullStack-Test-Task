@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Kysely, PostgresDialect } from "kysely";
 import { defineConfig } from "kysely-ctl";
 import { Pool } from "pg";

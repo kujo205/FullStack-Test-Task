@@ -9,13 +9,16 @@
 		"lint": "biome lint --write .",
 		"db:codegen": "npx kysely-codegen --out-file src/infra/db/types.ts",
 		"db:make-migration": "npx kysely migrate:make",
+
 		"db:migrate": "npx kysely migrate:latest",
 		"db:make-seed": "npx kysely seed:make",
 		"db:seed": "npx kysely seed:run",
-		"db:up": "docker compose up -d db",
+		"db:up": "docker compose up -d",
 		"db:down": "docker compose down",
 		"test:unit": "vitest run ./src/**",
-		"test:integration": "vitest run ./tests/integration/**"
+		"test:i": "dotenv -e .env.test vitest run ./tests/integration/**",
+		"pretest:i": "docker compose -f docker-compose-test.yml up -d --build && dotenv -e .env.test -- npm run db:migrate && dotenv -e .env.test -- npm run db:seed",
+		"posttest:i": "pnpm db:down"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.19.6",

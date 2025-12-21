@@ -1,9 +1,10 @@
 import { Hono } from "hono";
+import { testUser } from "@/infra/db/seeds/1766326874035_add_test_user";
 
 export async function loginTestUser(
   app: Hono,
-  email = "kuc8301@gmail.com",
-  password = "kuc8301@gmail.com",
+  email = testUser.email,
+  password = testUser.password,
 ): Promise<string> {
   const res = await app.request("/api/auth/sign-in/email", {
     method: "POST",
