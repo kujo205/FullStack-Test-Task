@@ -17,4 +17,16 @@ export class RepoService {
   async fetchAllUserRepos(userId: string, pagination: TPagination): Promise<Repo[]> {
     return this.repo.fetchAllUserRepos(userId, pagination);
   }
+
+  async deleteUserRepo(userId: string, repoId: string) {
+    return this.repo.deleteUserRepo(userId, repoId);
+  }
+
+  async getRepoById(repoId: string) {
+    return this.repo.getRepoById(repoId);
+  }
+
+  async updateRepoStatus(repoId: string, status: Repo["status"]) {
+    return this.repo.updateRepoStatus(repoId, status);
+  }
 }

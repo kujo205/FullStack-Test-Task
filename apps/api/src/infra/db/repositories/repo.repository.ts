@@ -74,4 +74,43 @@ export class RepoRepository extends BaseRepository {
 
     return result.id;
   }
+
+  async deleteUserRepo(userId: string, repoId: string) {
+    return this.db
+      .deleteFrom("repo")
+      .where("id", "=", repoId)
+      .where("userId", "=", userId)
+      .executeTakeFirst();
+  }
+
+  async getRepoById(repoId: string) {
+    return this.db
+      .selectFrom("repo")
+      .select([
+        "repo.id",
+        "repo.owner",
+        "repo.name",
+        "repo.stars",
+        "repo.forks",
+        "repo.issues",
+        "repo.createdAtUtc",
+        "repo.status",
+        "repo.userId",
+        "repo.createdAt",
+        "repo.updatedAt",
+      ])
+      .where("repo.id", "=", repoId)
+      .executeTakeFirstOrThrow();
+  }
+
+  async updateRepoStatus(repoId: string, status: Repo["status"]) {
+    return this.db
+      .updateTable("repo")
+      .set({
+        status,
+        updatedAt: new Date(),
+      })
+      .where("id", "=", repoId)
+      .executeTakeFirst();
+  }
 }

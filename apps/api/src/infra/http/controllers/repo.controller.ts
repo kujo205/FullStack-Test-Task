@@ -26,10 +26,24 @@ export class RepoController {
   }
 
   async deleteRepo(userId: string, repoId: string) {
-    // Implementation for deleting a repository goes here
+    return this.repoService.deleteUserRepo(userId, repoId);
   }
 
   async updateUserRepo(repoId: string) {
-    // implement repo updating logic
+    const [repo] = await Promise.all([
+      this.repoService.getRepoById(repoId),
+      this.repoService.updateRepoStatus(repoId, "pending"),
+    ]);
+
+    setImmediate(() => {
+      (async () => {
+        const ghData = await GithubService.fetchRepo({
+          owner: repo.owner,
+          name: repo.name,
+        });
+
+        await this.repoService.upsertGithubRepo(repoId, ghData);
+      })();
+    });
   }
 }

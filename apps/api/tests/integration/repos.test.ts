@@ -1,10 +1,13 @@
+import { assert } from "@infra/helpers/assert";
+import { testClient } from "hono/testing";
 import { describe, expect, it } from "vitest";
-import { app } from "@/infra/http/app";
+import { AppType, app } from "@/infra/http/app";
 import { loginTestUser } from "./auth-helper";
 
-// TODO: ideally run docker compose up when running the tests with proper seed and teardown after tests, but for local tests this is sufficient
 describe("repos route", async () => {
+  // @ts-ignore-next-line
   const cookie = await loginTestUser(app);
+  const client = testClient<AppType>(app);
 
   describe("POST /repos", () => {
     const options = {
@@ -73,14 +76,60 @@ describe("repos route", async () => {
   });
 
   describe("DELETE /repos/:repoId", ({ skip }) => {
-    skip("WIP");
-    // it("should delete user's repo", async () => {
-    //
-    // }
+    it("should delete user's repo", async () => {
+      const createRepoRes = await client.repos.$post(
+        {
+          json: { repository: "facebook/react" },
+        },
+        {
+          headers: { Cookie: cookie },
+        },
+      );
+
+      const data = await createRepoRes.json();
+
+      assert(data && "repoId" in data, "repoId not returned from creating repo");
+
+      const deletionRes = await client.repos[":repoId"].$delete(
+        {
+          param: { repoId: data.repoId },
+        },
+        {
+          headers: { Cookie: cookie },
+        },
+      );
+
+      expect(createRepoRes.status).toBe(200);
+      expect(deletionRes.status).toBe(200);
+    });
   });
 
   describe("GET /repos/:repoId/update, update the repo", ({ skip }) => {
-    skip("WIP");
-    // it("should update user's repo", async () => {
+    it("should update user's repo", async () => {
+      const createRepoRes = await client.repos.$post(
+        {
+          json: { repository: "honojs/hono" },
+        },
+        {
+          headers: { Cookie: cookie },
+        },
+      );
+
+      const data = await createRepoRes.json();
+
+      assert(data && "repoId" in data, "repoId not returned from creating repo");
+
+      const updateRes = await client.repos[":repoId"].update.$get(
+        {
+          param: { repoId: data.repoId },
+        },
+        {
+          headers: { Cookie: cookie },
+        },
+      );
+
+      expect(createRepoRes.status).toBe(200);
+      expect(updateRes.status).toBe(200);
+    });
   });
 });
