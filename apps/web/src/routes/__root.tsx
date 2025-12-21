@@ -1,5 +1,11 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  createRootRoute,
+  createRootRouteWithContext,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Header } from "@/features/main-layout/components/header";
 import { AuthProvider } from "@/lib/auth-client";
@@ -7,7 +13,9 @@ import { DialogProvider } from "@/shared/custom-ui/dialog-window";
 
 import appCss from "../styles.css?url";
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
   head: () => ({
     meta: [
       {
@@ -33,6 +41,8 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { queryClient } = Route.useRouteContext();
+
   return (
     <html lang="en">
       <head>
@@ -40,26 +50,28 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
 
       <body className="dark min-h-screen">
-        <AuthProvider>
-          <DialogProvider>
-            <Header />
-            {children}
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <DialogProvider>
+              <Header />
+              {children}
 
-            <TanStackDevtools
-              config={{
-                position: "bottom-right",
-              }}
-              plugins={[
-                {
-                  name: "Tanstack Router",
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-              ]}
-            />
+              <TanStackDevtools
+                config={{
+                  position: "bottom-right",
+                }}
+                plugins={[
+                  {
+                    name: "Tanstack Router",
+                    render: <TanStackRouterDevtoolsPanel />,
+                  },
+                ]}
+              />
 
-            <Scripts />
-          </DialogProvider>
-        </AuthProvider>
+              <Scripts />
+            </DialogProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

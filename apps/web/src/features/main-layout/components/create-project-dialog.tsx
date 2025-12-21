@@ -1,5 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
 import { Github } from "lucide-react";
 import { useState } from "react";
+import { rpc } from "@/lib/api-client";
 import { useDialog } from "@/shared/custom-ui/dialog-window";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -9,13 +11,24 @@ export function CreateProjectDialog() {
   const { close } = useDialog();
   const [repoUrl, setRepoUrl] = useState("");
 
-  const isValidRepo = /^https:\/\/github\.com\/[^/]+\/[^/]+$/.test(repoUrl);
+  const { mutate } = useMutation({
+    mutationFn: () => {
+      console.log("Creating new repo");
+
+      return rpc.repos.$post({
+        json: {
+          repository: repoUrl,
+        },
+      });
+    },
+  });
+
+  const isValidRepo = /^[^/\s]+\/[^/\s]+$/.test(repoUrl);
 
   const handleCreate = () => {
     if (!isValidRepo) return;
 
-    // TODO: call API / mutation
-    console.log("Create project from:", repoUrl);
+    mutate();
 
     close();
   };
@@ -23,12 +36,12 @@ export function CreateProjectDialog() {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="repo">GitHub Repository URL</Label>
+        <Label htmlFor="repo">GitHub repo name</Label>
         <div className="relative">
           <Github className="absolute left-3 top-2 h-4 w-4 text-muted-foreground" />
           <Input
             id="repo"
-            placeholder="https://github.com/user/repo"
+            placeholder="user/repo"
             className="pl-9"
             value={repoUrl}
             onChange={(e) => setRepoUrl(e.target.value)}
