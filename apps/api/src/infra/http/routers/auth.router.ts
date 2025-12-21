@@ -6,7 +6,7 @@ export function createAuthRouter() {
     strict: false,
   });
 
-  router.on(["POST", "GET"], "/api/auth/*", (c) => {
+  router.on(["POST", "GET"], "/auth/*", (c) => {
     return auth.handler(c.req.raw);
   });
 

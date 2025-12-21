@@ -4,14 +4,12 @@ import { authRouter, indexRouter, reposRouter } from "@infra/http/routers";
 
 import { Hono } from "hono";
 
-// const routes = [reposRouter, authRouter, indexRouter] as const;
-
 const app = new Hono()
   .use("*", corsMiddleware)
   .use("/repos/*", sessionMiddleware)
-  .route("/", indexRouter)
-  .route("/", authRouter)
-  .route("/", reposRouter);
+  .route("/repos", reposRouter)
+  .route("/api", authRouter) // Note: removed trailing slash for cleaner RPC paths
+  .route("/", indexRouter);
 
 console.log("Registered routes:");
 
