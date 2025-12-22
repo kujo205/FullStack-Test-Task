@@ -15,6 +15,8 @@
 		"db:seed": "npx kysely seed:run",
 		"db:up": "docker compose up -d",
 		"db:down": "docker compose down",
+
+		"test": "pnpm run test:unit && pnpm run test:i",
 		"test:unit": "vitest run ./src/**",
 		"test:i": "dotenv -e .env.test vitest run --setup-files tests/integration/setup.ts ./tests/integration/** ",
 		"pretest:i": "docker compose -f docker-compose-test.yml up -d --wait && dotenv -e .env.test -- npm run db:migrate && dotenv -e .env.test -- npm run db:seed",

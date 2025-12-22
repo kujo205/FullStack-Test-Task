@@ -6,10 +6,12 @@
 		"dev:web": "turbo run dev --filter=web",
 		"format:web": "turbo run format --filter=web",
 		"lint:web": "turbo run lint --filter=web",
+
 		"dev:api": "turbo run dev --filter=api",
 		"build:api": "turbo run build --filter=api",
 		"format:api": "turbo run format --filter=api",
-		"lint:api": "turbo run lint --filter=api"
+		"lint:api": "turbo run lint --filter=api",
+		"test:api": "turbo run test --filter=api"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.10",
