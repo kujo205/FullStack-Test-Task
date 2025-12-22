@@ -2,7 +2,7 @@ import { useRouter } from "@tanstack/react-router";
 import { createAuthClient } from "better-auth/react";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
-const authClient = createAuthClient({
+export const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_API_URL,
   basePath: "/auth",
 });
@@ -38,30 +38,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const router = useRouter();
 
+  const navigateAfterAuth = (delay = 100) => {
+    setTimeout(() => {
+      const search = router.state.location.search as { redirect?: string };
+      router.navigate({ to: search?.redirect || "/" });
+    }, delay);
+  };
+
   const signInEmail: typeof authClient.signIn.email = async (data, options) => {
     const result = await authClient.signIn.email(data, options);
 
-    if (!result?.error) {
-      // @ts-ignore-next-line
-      router.navigate({ to: "/" });
+    if (result && !result.error) {
+      navigateAfterAuth();
     }
+
     return result;
   };
 
   const signUpEmail: typeof authClient.signUp.email = async (data, options) => {
     const result = await authClient.signUp.email(data, options);
-    if (!result?.error) {
-      // @ts-ignore-next-line
-      router.navigate({ to: "/" });
+
+    if (result && !result.error) {
+      navigateAfterAuth();
     }
+
     return result;
   };
 
   const handleSignOut = async () => {
     await authClient.signOut();
-    // No need to manually set isLoggedIn(false),
-    // authClient.useSession() will update on the next tick.
-    router.navigate({ to: "/login" });
+    router.navigate({ to: "/auth/login" });
   };
 
   return (

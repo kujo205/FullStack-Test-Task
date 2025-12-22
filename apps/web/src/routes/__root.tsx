@@ -7,10 +7,10 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { User } from "better-auth";
 import { Header } from "@/features/main-layout/components/header";
 import { AuthProvider } from "@/lib/auth-client";
 import { DialogProvider } from "@/shared/custom-ui/dialog-window";
-
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -36,7 +36,6 @@ export const Route = createRootRouteWithContext<{
       },
     ],
   }),
-
   shellComponent: RootDocument,
 });
 
