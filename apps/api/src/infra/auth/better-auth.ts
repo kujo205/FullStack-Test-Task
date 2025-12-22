@@ -8,6 +8,8 @@ export const auth = betterAuth({
     connectionString: process.env.DATABASE_URL,
   }),
 
+  basePath: "/auth",
+
   secret: process.env.BETTER_AUTH_SECRET!,
 
   trustedOrigins: ["http://localhost:3000"],

@@ -4,6 +4,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 
 const authClient = createAuthClient({
   baseURL: import.meta.env.VITE_API_URL,
+  basePath: "/auth",
 });
 
 interface Session {

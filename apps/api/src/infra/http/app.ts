@@ -8,7 +8,7 @@ const app = new Hono()
   .use("*", corsMiddleware)
   .use("/repos/*", sessionMiddleware)
   .route("/repos", reposRouter)
-  .route("/api", authRouter) // Note: removed trailing slash for cleaner RPC paths
+  .route("/auth", authRouter) // Note: removed trailing slash for cleaner RPC paths
   .route("/", indexRouter);
 
 console.log("Registered routes:");

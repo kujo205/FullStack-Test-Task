@@ -6,7 +6,7 @@ export async function loginTestUser(
   email = testUser.email,
   password = testUser.password,
 ): Promise<string> {
-  const res = await app.request("/api/auth/sign-in/email", {
+  const res = await app.request("/auth/sign-in/email", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
