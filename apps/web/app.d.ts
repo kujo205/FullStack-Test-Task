@@ -5,7 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_API_URL: string;
 }
 
-// biome-ignore lint/correctness/noUnusedVariables: <explanation>
+// biome-ignore lint/correctness/noUnusedVariables: will be picked up by ide
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

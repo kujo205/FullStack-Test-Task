@@ -5,11 +5,10 @@ import type { ZodSchema, z } from "zod";
 /**
  * A type-safe wrapper for zValidator that returns a consistent 400 error format.
  */
-function prettyValidator<
-  T extends ZodSchema,
-  Target extends keyof ValidationTargets,
-  I = z.input<T>,
->(target: Target, schema: T) {
+function prettyValidator<T extends ZodSchema, Target extends keyof ValidationTargets>(
+  target: Target,
+  schema: T,
+) {
   return zValidator(target, schema, (result, c) => {
     if (!result.success) {
       return c.json(
