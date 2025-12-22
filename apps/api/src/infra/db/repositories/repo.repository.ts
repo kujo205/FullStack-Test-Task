@@ -27,6 +27,7 @@ export class RepoRepository extends BaseRepository {
       .where("repo.userId", "=", userId)
       .limit(paginationOps.limit)
       .offset(paginationOps.offset)
+      .orderBy("repo.createdAt", "desc")
       .execute();
   }
 
