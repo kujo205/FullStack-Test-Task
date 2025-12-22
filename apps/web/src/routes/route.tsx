@@ -84,8 +84,21 @@ function App() {
     }
   }
 
-  function handleUpdateRepo(repoId: string) {
-    alert("updating repo");
+  async function handleUpdateRepo(repoId: string) {
+    const res = await rpc.repos[":repoId"].update
+      .$get({
+        param: { repoId },
+      })
+      .then((res) => res.json());
+
+    if (res.success) {
+      toast.info(
+        "Repository is being updated, if you dont see changes soon, try refreshing the page",
+      );
+      await ctx.queryClient.invalidateQueries(["repos"]);
+    } else {
+      toast.error("Failed to update repository");
+    }
   }
 
   return (

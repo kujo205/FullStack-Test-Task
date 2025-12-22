@@ -48,7 +48,7 @@ export function RepoCard({ repo, onUpdate, onDelete }: RepoCardProps) {
     {
       count: repo.issues,
       icon: AlertCircle,
-      text: "stars",
+      text: "issues",
     },
     {
       count: repo.forks,
