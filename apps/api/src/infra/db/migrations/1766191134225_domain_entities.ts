@@ -21,7 +21,7 @@ export async function up(db: Kysely<never>): Promise<void> {
                              "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
 
                              CONSTRAINT "repoStatusCheck"
-                                 CHECK ("status" IN ('pending', 'ready')),
+                                 CHECK ("status" IN ('pending', 'ready', 'error')),
 
                              CONSTRAINT "uniqueRepoPerUser"
                                  UNIQUE ("userId", "owner", "name"),
