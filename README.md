@@ -3,8 +3,37 @@
 
 ## How to run this repo
 
+In order to run this repo, please follow these steps:
+1. Clone the repository:
 
+   ```bash
+   git clone
+   ```
+   
+2 .**Install dependencies**:
 
+   ```bash
+   pnpm install
+   ```
+
+3 .**Copy env files while being in root directory**:
+
+   ```bash
+   cp apps/api/.env.example apps/api/.env
+   cp apps/web/.env.example apps/web/.env
+   ```
+
+4 .**Ensure you have docker runnning**:
+
+5 .**Run docker**:
+
+```bash
+    docker-compose up --build
+```
+
+After some time, the backend server together with frontend server and db should be running. You can access the application at `http://localhost:3000`.
+
+Good luck exploring the code!
 
 ## Project Structure
 
