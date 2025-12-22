@@ -1,5 +1,5 @@
 import { Repo } from "@api/core/entities/Repo";
-import { AlertCircle, GitFork, MoreVertical, Pencil, Star, Trash2 } from "lucide-react";
+import { AlertCircle, ArrowUpIcon, GitFork, MoreVertical, Star, Trash2 } from "lucide-react";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
@@ -58,13 +58,17 @@ export function RepoCard({ repo, onUpdate, onDelete }: RepoCardProps) {
   ];
 
   return (
-    <Card>
+    <Card className="group">
       <CardHeader>
         <div className="flex items-start justify-between">
-          <div className="flex-1 min-w-0 space-y-1">
-            <CardTitle className="text-xl truncate">{repo.name}</CardTitle>
-            <CardDescription>{repo.owner}</CardDescription>
-          </div>
+          <a target="_blank" href={`https://github.com/${repo.owner}/${repo.name}`}>
+            <div className="group flex-1 min-w-0 space-y-1">
+              <CardTitle className="text-xl group-hover:underline underline-offset-3 truncate">
+                {repo.name}
+              </CardTitle>
+              <CardDescription>{repo.owner}</CardDescription>
+            </div>
+          </a>
           <div className="flex items-center gap-2 ml-4">
             <Badge variant={getStatusVariant(repo.status)}>{repo.status}</Badge>
             <DropdownMenu>
@@ -75,7 +79,7 @@ export function RepoCard({ repo, onUpdate, onDelete }: RepoCardProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onUpdate?.(repo.id)}>
-                  <Pencil className="mr-2 h-4 w-4" />
+                  <ArrowUpIcon className="mr-2 h-4 w-4" />
                   Update
                 </DropdownMenuItem>
                 <DropdownMenuItem

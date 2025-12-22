@@ -1,6 +1,7 @@
 import { Repo } from "@api/core/entities/Repo.ts";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 import { RepoCard, RepoCardSkeleton } from "@/features/repos/components/repo-card";
 import { rpc } from "@/lib/api-client";
@@ -29,6 +30,7 @@ function App() {
   const router = useRouter();
   const navigate = useNavigate();
   const { page, pageSize } = Route.useSearch();
+  const ctx = Route.useRouteContext();
 
   const { data: rawData, isLoading } = useQuery({
     queryKey: ["repos", page, pageSize],
@@ -64,9 +66,27 @@ function App() {
     return null;
   }
 
-  // Extract items and totalPages from your API response
   const repos = rawData?.data?.repos ?? [];
   const totalPages = rawData?.data.meta.pages || 1;
+
+  async function handleDeleteRepo(repoId: string) {
+    const res = await rpc.repos[":repoId"]
+      .$delete({
+        param: { repoId },
+      })
+      .then((res) => res.json());
+
+    if (res.success) {
+      toast.success("Repository deleted successfully");
+      await ctx.queryClient.invalidateQueries(["repos"]);
+    } else {
+      toast.error("Failed to delete repository");
+    }
+  }
+
+  function handleUpdateRepo(repoId: string) {
+    alert("updating repo");
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -80,7 +100,14 @@ function App() {
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading || isLoadingAuthStatus}
-        renderItem={(repo: Repo) => <RepoCard key={repo.id} repo={repo} />}
+        renderItem={(repo: Repo) => (
+          <RepoCard
+            onDelete={handleDeleteRepo}
+            onUpdate={handleUpdateRepo}
+            key={repo.id}
+            repo={repo}
+          />
+        )}
         emptyState={
           <div className="flex flex-col items-center justify-center h-64 text-center border-2 border-dashed border-stone-300 rounded-lg">
             <p className="text-stone-500 text-lg font-handwriting">No repositories found</p>

@@ -7,10 +7,10 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { User } from "better-auth";
 import { Header } from "@/features/main-layout/components/header";
 import { AuthProvider } from "@/lib/auth-client";
 import { DialogProvider } from "@/shared/custom-ui/dialog-window";
+import { Toaster } from "@/shared/ui/sonner";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{
@@ -53,6 +53,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <AuthProvider>
             <DialogProvider>
               <Header />
+              <Toaster richColors={true} />
               {children}
 
               <TanStackDevtools
