@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Github } from "lucide-react";
 import { useState } from "react";
 import { rpc } from "@/lib/api-client";
@@ -11,6 +11,8 @@ export function CreateProjectDialog() {
   const { close } = useDialog();
   const [repoUrl, setRepoUrl] = useState("");
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: () => {
       console.log("Creating new repo");
@@ -19,6 +21,11 @@ export function CreateProjectDialog() {
         json: {
           repository: repoUrl,
         },
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["repos"],
       });
     },
   });

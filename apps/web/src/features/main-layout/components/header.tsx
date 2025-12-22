@@ -52,7 +52,7 @@ export function Header() {
                 Sign out
               </Button>
               <Button variant="ghost" asChild>
-                <Link to="." className="cursor-pointer">
+                <Link to="/" className="cursor-pointer">
                   All Projects
                 </Link>
               </Button>
