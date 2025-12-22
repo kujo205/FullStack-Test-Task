@@ -1,7 +1,7 @@
 import { Repo } from "@core/entities/Repo";
 import { RepoFromGh } from "@core/services/github.service";
 import { BaseRepository, type DB } from "@infra/db/repositories/base.repository";
-import { TPagination } from "@infra/http/schemas/pagination.schema";
+import { TPagination, TPaginationMeta } from "@infra/http/schemas/pagination.schema";
 
 export class RepoRepository extends BaseRepository {
   constructor(db: DB) {
@@ -28,6 +28,22 @@ export class RepoRepository extends BaseRepository {
       .limit(paginationOps.limit)
       .offset(paginationOps.offset)
       .execute();
+  }
+
+  async getTotalUserReposGapes(
+    userId: string,
+    paginationOps: TPagination,
+  ): Promise<TPaginationMeta> {
+    const row = await this.db
+      .selectFrom("repo")
+      .select(this.db.fn.count("id").as("total"))
+      .where("repo.userId", "=", userId)
+      .executeTakeFirst();
+
+    const total = Number((row as any)?.total ?? 0);
+    const pages = paginationOps.limit > 0 ? Math.ceil(total / paginationOps.limit) : 0;
+
+    return { total, pages };
   }
 
   async upsertGithubRepo(repoId: string, repo: RepoFromGh) {

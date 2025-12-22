@@ -14,8 +14,16 @@ export class RepoService {
     return this.repo.upsertGithubRepo(repoId, repo);
   }
 
-  async fetchAllUserRepos(userId: string, pagination: TPagination): Promise<Repo[]> {
-    return this.repo.fetchAllUserRepos(userId, pagination);
+  async fetchAllUserRepos(userId: string, pagination: TPagination) {
+    const [allRepos, paginationMeta] = await Promise.all([
+      this.repo.fetchAllUserRepos(userId, pagination),
+      this.repo.getTotalUserReposGapes(userId, pagination),
+    ]);
+
+    return {
+      repos: allRepos,
+      meta: paginationMeta,
+    };
   }
 
   async deleteUserRepo(userId: string, repoId: string) {

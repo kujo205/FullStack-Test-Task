@@ -21,6 +21,11 @@ export type TPagination = {
   offset: number;
 };
 
+export interface TPaginationMeta {
+  total: number;
+  pages: number;
+}
+
 export function parsePagination(input: PaginationQuery): TPagination {
   const { page, pageSize } = input;
   const limit = pageSize;

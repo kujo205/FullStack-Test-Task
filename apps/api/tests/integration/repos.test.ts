@@ -58,6 +58,8 @@ describe("repos route", async () => {
       expect(res.status).toBe(200);
       expect(body.success).toBe(true);
       expect(body.data).toBeTypeOf("object");
+      expect(body.data.repos).toBeTypeOf("object");
+      expect(body.data.meta).toBeTypeOf("object");
     });
 
     it("should fetch user repos even without specifying page and size", async () => {
