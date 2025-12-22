@@ -1,4 +1,5 @@
 import { Repo } from "@core/entities/Repo";
+import { HTTPException } from "hono/http-exception";
 
 export type RepoFromGh = Omit<Repo, "createdAt" | "updatedAt" | "userId" | "id">;
 
@@ -17,7 +18,7 @@ export class GithubService {
     });
 
     if (res.status === 404) {
-      throw new Error("Repository not found");
+      throw new HTTPException(404, { message: "Repository not found" });
     }
     if (!res.ok) {
       const body = await res.text();
