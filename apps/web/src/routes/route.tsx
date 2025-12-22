@@ -7,10 +7,9 @@ import { rpc } from "@/lib/api-client";
 import { useAuth } from "@/lib/auth-client";
 import { PaginationContainer } from "@/shared/custom-ui/pagination-container";
 
-// Zod schema for search params validation
 const searchParamsSchema = z.object({
   page: z.number().min(1).catch(1),
-  perPage: z.number().min(1).max(100).catch(10),
+  pageSize: z.number().min(1).max(100).catch(10),
 });
 
 type SearchParams = z.infer<typeof searchParamsSchema>;
@@ -19,7 +18,7 @@ export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): SearchParams => {
     return searchParamsSchema.parse({
       page: Number(search?.page) || 1,
-      perPage: Number(search?.perPage) || 10,
+      pageSize: Number(search?.pageSize) || 10,
     });
   },
   component: App,
@@ -29,15 +28,15 @@ function App() {
   const { isLoggedIn, isLoading: isLoadingAuthStatus } = useAuth();
   const router = useRouter();
   const navigate = useNavigate();
-  const { page, perPage } = Route.useSearch();
+  const { page, pageSize } = Route.useSearch();
 
   const { data: rawData, isLoading } = useQuery({
-    queryKey: ["repos", page, perPage],
+    queryKey: ["repos", page, pageSize],
     queryFn: async () => {
       const resp = await rpc.repos.$get({
         query: {
           page,
-          perPage,
+          pageSize,
         },
       });
       return resp.json();
@@ -54,7 +53,7 @@ function App() {
 
   const handlePageSizeChange = (newSize: number) => {
     navigate({
-      search: (prev) => ({ ...prev, perPage: newSize, page: 1 }),
+      search: (prev) => ({ ...prev, pageSize: newSize, page: 1 }),
     });
   };
 
@@ -77,7 +76,7 @@ function App() {
         items={repos}
         totalPages={totalPages}
         currentPage={page}
-        pageSize={perPage}
+        pageSize={pageSize}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
         isLoading={isLoading || isLoadingAuthStatus}

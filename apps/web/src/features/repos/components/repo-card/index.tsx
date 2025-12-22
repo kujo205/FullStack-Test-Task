@@ -93,7 +93,7 @@ export function RepoCard({ repo, onUpdate, onDelete }: RepoCardProps) {
       <CardContent className="space-y-4">
         <div className="flex justify-between gap-4">
           {repoProperties.map((prop, key) => (
-            <div className="flex items-center gap-2">
+            <div key={key} className="flex items-center gap-2">
               <prop.icon className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">{prop.count}</span>
               <span className="text-sm text-muted-foreground">{prop.text}</span>

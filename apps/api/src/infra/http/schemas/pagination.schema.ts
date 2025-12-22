@@ -5,11 +5,12 @@ const ALLOWED_PAGE_SIZES = [10, 20, 50, 100] as const;
 export const PaginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).catch(1),
 
-  pageSize: z.coerce
-    .number()
-    .int()
-    .refine((v) => ALLOWED_PAGE_SIZES.includes(v as (typeof ALLOWED_PAGE_SIZES)[number]))
-    .catch(20),
+  pageSize: z.preprocess((v) => {
+    const n = Number(v);
+
+    console.log("n", n);
+    return ALLOWED_PAGE_SIZES.includes(n) ? n : 20;
+  }, z.number().int()),
 });
 
 export type PaginationQuery = z.infer<typeof PaginationQuerySchema>;
