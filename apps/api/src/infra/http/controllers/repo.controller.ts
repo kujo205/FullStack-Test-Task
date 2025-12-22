@@ -12,9 +12,14 @@ export class RepoController {
     // schedule background fetch so the HTTP response returns immediately
     setImmediate(() => {
       (async () => {
-        const ghData = await GithubService.fetchRepo(repoPath);
+        try {
+          const ghData = await GithubService.fetchRepo(repoPath);
 
-        await this.repoService.upsertGithubRepo(repoId, ghData);
+          await this.repoService.upsertGithubRepo(repoId, ghData);
+        } catch (error) {
+          console.error("Error creating repo:", error);
+          await this.repoService.updateRepoStatus(repoId, "error");
+        }
       })();
     });
 
@@ -37,12 +42,17 @@ export class RepoController {
 
     setImmediate(() => {
       (async () => {
-        const ghData = await GithubService.fetchRepo({
-          owner: repo.owner,
-          name: repo.name,
-        });
+        try {
+          const ghData = await GithubService.fetchRepo({
+            owner: repo.owner,
+            name: repo.name,
+          });
 
-        await this.repoService.upsertGithubRepo(repoId, ghData);
+          await this.repoService.upsertGithubRepo(repoId, ghData);
+        } catch (error) {
+          console.error("Error updating repo:", error);
+          await this.repoService.updateRepoStatus(repoId, "error");
+        }
       })();
     });
   }
