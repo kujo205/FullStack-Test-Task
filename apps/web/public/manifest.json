@@ -1,6 +1,6 @@
 {
-	"short_name": "TanStack App",
-	"name": "Create TanStack App Sample",
+	"short_name": "Github PM",
+	"name": "Github PM app, manage your favorite repos",
 	"icons": [
 		{
 			"src": "favicon.ico",

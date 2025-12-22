@@ -26,7 +26,7 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Github PM",
       },
     ],
     links: [
@@ -56,17 +56,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               <Toaster richColors={true} />
               {children}
 
-              <TanStackDevtools
-                config={{
-                  position: "bottom-right",
-                }}
-                plugins={[
-                  {
-                    name: "Tanstack Router",
-                    render: <TanStackRouterDevtoolsPanel />,
-                  },
-                ]}
-              />
+              {/*<TanStackDevtools*/}
+              {/*  config={{*/}
+              {/*    position: "bottom-right",*/}
+              {/*  }}*/}
+              {/*  plugins={[*/}
+              {/*    {*/}
+              {/*      name: "Tanstack Router",*/}
+              {/*      render: <TanStackRouterDevtoolsPanel />,*/}
+              {/*    },*/}
+              {/*  ]}*/}
+              {/*/>*/}
 
               <Scripts />
             </DialogProvider>
