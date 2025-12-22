@@ -1,22 +1,23 @@
-# Тестове завдання на позицію Full-stack розробника
+# Full-stack Developer Assessment Task
 
-# Стурктура проекту
 
-заадання доступне за [посиланням](/TASK.md)
+## How to run this repo
 
-Проєкт засетаплений за допомоогою turbopack.
-Я вирішив, що доволі непоганим вибором буде мати 2 окремі проєкти
-в 2 окремих процесах, тому цей проєк розділений на 2 частини:
 
-### Основні апки
 
-- apps/web - фронтенд частина на React + TypeScript + TanStack Router (вирішив спробувати в якості експерименту).
-  Більше почитати про архітектурні рішення для фронтенду можна в [файлі](apps/web/ARCHITECTURE.md)
 
-- apps/api - бекенд частина на Node.js + TypeScript + Hono
-  Більше почитати про архітектурні рішення для фронтенду можна в [файлі](apps/api/ARCHITECTURE.md)
+## Project Structure
 
-### Допоміжні пакети
+The task requirements are available at [this link](/TASK.md).
 
-- packages/biome-config - конфіг для biome (лінтер, форматер)
-- packages/typescript-config - спільний tsconfig для всього монорепо
+This project is configured as a monorepo using **Turborepo**. I chose this approach to maintain two distinct projects running in separate processes, ensuring a clean boundary between the frontend and backend.
+
+### Core Applications
+
+- **`apps/web`**: Frontend application built with **React**, **TypeScript**, and **TanStack Router** (implemented as an architectural experiment). Detailed information regarding frontend architectural decisions can be found in the [Architecture Guide](./ARCHITECTURE.md).
+- **`apps/api`**: Backend service built with **Node.js**, **TypeScript**, and **Hono**. Detailed information regarding backend architectural decisions can be found in the [Architecture Guide](./ARCHITECTURE.md).
+
+### Shared Packages
+
+- **`packages/biome-config`**: Centralized configuration for **Biome** (handling both linting and formatting).
+- **`packages/typescript-config`**: Shared **tsconfig** base used across the entire monorepo to ensure type consistency.
