@@ -6,7 +6,7 @@ import { app } from "@infra/http/app";
 serve(
   {
     fetch: app.fetch,
-    port: 4000,
+    port: process.env.PORT,
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
