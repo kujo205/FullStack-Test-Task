@@ -1,31 +1,21 @@
 FROM node:20-alpine
 
-# Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Copy root configurations
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json* ./
 
-# Copy workspace packages
+# Copy packages and the api app
 COPY packages ./packages
 COPY apps/api ./apps/api
 
-# Copy other config files
-COPY turbo.json* ./
+# Install dependencies (all needed for the build)
+RUN pnpm install --frozen-lockfile
 
-# Install dependencies
-RUN pnpm install
-
-# Set working directory to api
 WORKDIR /app/apps/api
 
 ENV PORT=4000
 ENV NODE_ENV=production
-
-# Expose port
 EXPOSE $PORT
-
-# Start with tsx (no build needed)
-CMD ["pnpm", "tsx", "src/infra/http/index.ts"]

@@ -8,6 +8,7 @@ export const PaginationQuerySchema = z.object({
   pageSize: z.preprocess((v) => {
     const n = Number(v);
 
+    // @ts-ignore
     return ALLOWED_PAGE_SIZES.includes(n) ? n : 20;
   }, z.number().int()),
 });

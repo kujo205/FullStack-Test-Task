@@ -1,22 +1,46 @@
 services:
   db:
-    image: postgres:13
+    image: postgres:13-alpine
     env_file:
       - ./apps/api/.env
     volumes:
       - db_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydatabase"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
     env_file:
-      - ./apps/api/.env
+      ./apps/api/.env
+    command: >
+      sh -c "pnpm run db:migrate && 
+         pnpm run db:seed; 
+         pnpm exec tsx src/infra/http/index.ts"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "4000:4000"
 
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      VITE_API_URL: http://localhost:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+
 volumes:
   db_data:
+
+
+

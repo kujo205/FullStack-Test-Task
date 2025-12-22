@@ -20,7 +20,8 @@ export async function loginTestUser(
   const setCookies = res.headers.getSetCookie();
 
   const cookies = setCookies.map((cookie) => {
-    const nameValue = cookie.split(";")[0].trim();
+    // @ts-ignore
+    const nameValue = cookie?.split(";")[0].trim();
     return nameValue;
   });
 

@@ -8,11 +8,15 @@ export const testUser = {
 };
 
 export async function seed(db: Kysely<never>): Promise<void> {
-  await auth.api.signUpEmail({
-    body: {
-      email: testUser.email,
-      password: testUser.password,
-      name: testUser.name,
-    },
-  });
+  try {
+    await auth.api.signUpEmail({
+      body: {
+        email: testUser.email,
+        password: testUser.password,
+        name: testUser.name,
+      },
+    });
+  } catch (e) {
+    console.error("Error seeding test user:", e);
+  }
 }

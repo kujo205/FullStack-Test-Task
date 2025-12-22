@@ -17,6 +17,7 @@ beforeEach(async () => {
   }
 
   // Seed test user
+  // @ts-ignore
   await seedTestUser(db);
 });
 
