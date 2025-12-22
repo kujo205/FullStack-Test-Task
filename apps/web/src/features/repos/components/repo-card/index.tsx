@@ -104,9 +104,11 @@ export function RepoCard({ repo, onUpdate, onDelete }: RepoCardProps) {
         <Separator />
 
         <div className="flex items-center justify-end text-sm">
-          <span className="text-muted-foreground">
-            created {formatDate(Number(repo.createdAtUtc))}
-          </span>
+          {repo.createdAtUtc && (
+            <span className="text-muted-foreground">
+              created {formatDate(Number(repo.createdAtUtc))}
+            </span>
+          )}
         </div>
       </CardContent>
     </Card>
